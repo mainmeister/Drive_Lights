@@ -33,6 +33,9 @@ Example:
 sudo .venv/bin/python main.py /mnt/data
 ```
 
+> [!NOTE]
+> This program monitors software activity on a mount point. The actual hardware mounted on this mount point may or may not show the same activity on their own hardware activity LEDs due to buffering and other factors. If you are monitoring an SSD you might be alarmed at times by the number of writes being shown on the write LED. This is only showing you the operating systems calls to the device drivers write method. It is up to the device driver when or if a physical write takes place on the physical drive.
+
 ## Project Files
 - `main.py`: The core monitoring logic.
 - `overview.md`: A detailed technical overview of `main.py`.
