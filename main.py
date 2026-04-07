@@ -2,9 +2,9 @@
 #   Title:      Drive_Lights
 #   Author:     Wiilliam Main
 #   Created:    2021-05-20
-#   Synopsys:   When there are GPIO pins available, flash a LED for reads and writes
-#   Inputs:     -p pin#
-#               pin# is the gpio pin to flash
+#   Synopsys:   Monitor disk activity (read/write events) and flash GPIO LEDs.
+#   Inputs:     - [mount_point] (optional, default: /)
+#   Config:     - READ_LED and WRITE_LED in .env file for pin customization.
 #-----------------------------------------------------------------------------------------------------------------------
 from gpiozero import LED, Device
 from gpiozero.pins.lgpio import LGPIOFactory
