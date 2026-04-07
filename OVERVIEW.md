@@ -6,11 +6,12 @@ Here is a breakdown of how the code works:
 
 ### 1. Hardware Control (GPIO)
 The script uses the `gpiozero` library to control the LEDs.
-- **Pin Factory:** It specifically attempts to use `LGPIOFactory` (lines 18-23), which is the recommended backend for newer Raspberry Pi hardware (like the Pi 5) to ensure reliable pin control.
-- **LED Initialization:** It defines two LED objects (lines 26-27):
-    - **Read LED:** Connected to **GPIO 20**.
-    - **Write LED:** Connected to **GPIO 21**.
-- **The `blink` function:** This function (lines 29-41) triggers a very short pulse (0.01 seconds). It uses `background=True` so that the main monitoring loop isn't paused while the LED is flashing.
+- **Pin Factory:** It specifically attempts to use `LGPIOFactory` (lines 23-27), which is the recommended backend for newer Raspberry Pi hardware (like the Pi 5) to ensure reliable pin control.
+- **Environment Variables:** The script uses `python-dotenv` to load pin configurations from a `.env` file (lines 19-20 and 31-32).
+- **LED Initialization:** It defines two LED objects (lines 34-35):
+    - **Read LED:** Default GPIO 20 (can be changed via `READ_LED` in `.env`).
+    - **Write LED:** Default GPIO 21 (can be changed via `WRITE_LED` in `.env`).
+- **The `blink` function:** This function (lines 37-49) triggers a very short pulse (0.01 seconds). It uses `background=True` so that the main monitoring loop isn't paused while the LED is flashing.
 
 ### 2. Kernel-Level Monitoring (Fanotify)
 Instead of constantly polling files (which would be slow and resource-intensive), the script uses **`fanotify`**, a powerful Linux kernel feature.

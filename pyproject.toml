@@ -7,4 +7,5 @@ dependencies = [
     "gpiozero>=2.0.1",
     "lgpio>=0.2.2.0",
     "watchdog>=6.0.0",
+    "python-dotenv>=1.0.1",
 ]

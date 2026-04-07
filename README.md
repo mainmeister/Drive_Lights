@@ -10,9 +10,17 @@ A Python script that monitors disk activity (read/write events) using `fanotify`
 
 ## Hardware Requirements
 - Raspberry Pi (tested on Raspberry Pi 5).
-- LEDs connected to GPIO pins:
-  - **Write LED:** GPIO 21
-  - **Read LED:** GPIO 20
+- LEDs connected to GPIO pins (configurable via `.env`):
+  - **Write LED:** Default GPIO 21
+  - **Read LED:** Default GPIO 20
+
+## Configuration
+Create a `.env` file in the project root to customize pin numbers:
+```env
+READ_LED=20
+WRITE_LED=21
+```
+See `.env.example` for reference.
 
 ## Installation
 The project uses `uv` for dependency management.

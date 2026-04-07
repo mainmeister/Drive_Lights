@@ -12,6 +12,7 @@ ENV/
 .vscode/
 
 # Project specific
+.env
 DESCRIPTION.md
 *.log
 

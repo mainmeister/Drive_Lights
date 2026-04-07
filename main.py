@@ -14,6 +14,10 @@ import struct
 import argparse
 import sys
 from typing import NoReturn
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize the pin factory
 try:
@@ -23,8 +27,12 @@ except ImportError:
     pass
 
 # Initialize LEDs once
-write_led = LED(21)
-read_led = LED(20)
+# Default to 20 for reads and 21 for writes
+read_pin = int(os.getenv("READ_LED", 20))
+write_pin = int(os.getenv("WRITE_LED", 21))
+
+write_led = LED(write_pin)
+read_led = LED(read_pin)
 
 def blink(led_device: LED):
     """
