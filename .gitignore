@@ -12,7 +12,7 @@ ENV/
 .vscode/
 
 # Project specific
-output.txt
+DESCRIPTION.md
 *.log
 
 # UV
