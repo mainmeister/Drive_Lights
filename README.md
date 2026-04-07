@@ -35,6 +35,7 @@ sudo .venv/bin/python main.py /mnt/data
 
 ## Project Files
 - `main.py`: The core monitoring logic.
+- `overview.md`: A detailed technical overview of `main.py`.
 - `Sketch.fzz`, `Sketch_schem.png`: Fritzing hardware diagrams.
 - `pyproject.toml`, `uv.lock`: Dependency configuration.
 
