@@ -8,4 +8,9 @@ dependencies = [
     "lgpio>=0.2.2.0",
     "watchdog>=6.0.0",
     "python-dotenv>=1.0.1",
+    "pyrefly>=0.60.0",
+    "pyright>=1.1.408",
+    "ruff>=0.15.9",
+    "ty>=0.0.29",
+    "black>=26.3.1",
 ]

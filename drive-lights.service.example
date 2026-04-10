@@ -1,0 +1,23 @@
+[Unit]
+Description=Drive Activity LED Monitor
+After=network.target
+
+[Service]
+# Replace 'mainmeister' with your actual username
+User=mainmeister
+Group=mainmeister
+
+# Set the working directory to the project root
+WorkingDirectory=/home/mainmeister/PycharmProjects/Drive_Lights
+
+# Use the full path to the virtual environment's python interpreter
+ExecStart=/home/mainmeister/PycharmProjects/Drive_Lights/.venv/bin/python main.py /
+
+# This allows the non-root user to access fanotify (requires systemd v229+)
+AmbientCapabilities=CAP_SYS_ADMIN
+
+# Optional: Restart the service if it crashes
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

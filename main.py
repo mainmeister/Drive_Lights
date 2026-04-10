@@ -1,11 +1,11 @@
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 #   Title:      Drive_Lights
 #   Author:     Wiilliam Main
 #   Created:    2021-05-20
 #   Synopsys:   Monitor disk activity (read/write events) and flash GPIO LEDs.
 #   Inputs:     - [mount_point] (optional, default: /)
 #   Config:     - READ_LED and WRITE_LED in .env file for pin customization.
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 from gpiozero import LED, Device
 from gpiozero.pins.lgpio import LGPIOFactory
 import os
@@ -34,6 +34,7 @@ write_pin = int(os.getenv("WRITE_LED", 21))
 write_led = LED(write_pin)
 read_led = LED(read_pin)
 
+
 def blink(led_device: LED):
     """
     Flash the LED for a short duration.
@@ -48,6 +49,7 @@ def blink(led_device: LED):
     except Exception:
         pass
 
+
 # Fanotify constants from <sys/fanotify.h>
 FAN_CLASS_NOTIF = 0x00000000
 FAN_MARK_ADD = 0x00000001
@@ -57,6 +59,7 @@ FAN_MODIFY = 0x00000002
 FAN_EVENT_METADATA_LEN = 24  # Size of fanotify_event_metadata
 
 libc = ctypes.CDLL("libc.so.6")
+
 
 class FanotifyMonitor:
     """Monitors a mount point for read/write events using fanotify."""
@@ -69,12 +72,17 @@ class FanotifyMonitor:
         """Initialize the fanotify group and mark the mount point."""
         self.fd = libc.fanotify_init(FAN_CLASS_NOTIF, os.O_RDONLY)
         if self.fd < 0:
-            raise OSError("Failed to initialize fanotify. Are you root?")
+            raise OSError(
+                "Failed to initialize fanotify. Ensure you have CAP_SYS_ADMIN capabilities (e.g., run as root or set up a systemd service with AmbientCapabilities)."
+            )
 
         mask: int = FAN_ACCESS | FAN_MODIFY
         result: int = libc.fanotify_mark(
-            self.fd, FAN_MARK_ADD | FAN_MARK_MOUNT, mask, -1,
-            self.mount_path.encode('utf-8')
+            self.fd,
+            FAN_MARK_ADD | FAN_MARK_MOUNT,
+            mask,
+            -1,
+            self.mount_path.encode("utf-8"),
         )
         if result < 0:
             raise OSError(f"Failed to mark mount point: {self.mount_path}")
@@ -82,7 +90,7 @@ class FanotifyMonitor:
     def run(self) -> NoReturn:
         """Read and process events in a loop."""
         self._initialize_fanotify()
-        #print(f"Monitoring {self.mount_path}... Press Ctrl+C to stop.")
+        # print(f"Monitoring {self.mount_path}... Press Ctrl+C to stop.")
 
         try:
             while True:
@@ -98,9 +106,9 @@ class FanotifyMonitor:
                     if event_fd >= 0:
                         if mask & FAN_ACCESS or mask & FAN_MODIFY:
                             if mask & FAN_MODIFY:
-                                blink(write_led)           #flash write led
+                                blink(write_led)  # flash write led
                             else:
-                                blink(read_led)           #flash read led
+                                blink(read_led)  # flash read led
                         os.close(event_fd)
 
                     offset += event_len
@@ -118,13 +126,16 @@ class FanotifyMonitor:
         except FileNotFoundError:
             return "Unknown"
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Monitor a mount point for read/write events using fanotify.")
+    parser = argparse.ArgumentParser(
+        description="Monitor a mount point for read/write events using fanotify."
+    )
     parser.add_argument(
         "mount_point",
         nargs="?",
         default="/",
-        help="The mount point to monitor (default: /)"
+        help="The mount point to monitor (default: /)",
     )
     args = parser.parse_args()
 
