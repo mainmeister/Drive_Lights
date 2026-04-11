@@ -6,7 +6,7 @@ Here is a breakdown of how the code works:
 
 ### 1. Hardware Control (GPIO)
 The script uses the `gpiozero` library to control the LEDs.
-- **Pin Factory:** It specifically attempts to use `LGPIOFactory` (lines 23-27), which is the recommended backend for newer Raspberry Pi hardware (like the Pi 5) to ensure reliable pin control.
+- **Pin Factory:** It specifically attempts to use `LGPIOFactory` on Linux (lines 23-27), which is the recommended backend for newer Raspberry Pi hardware. On Windows or PCs without native GPIO, you can use a USB adapter like the **MCP2221A**, which may require `Adafruit-Blinka` as a compatibility layer.
 - **Environment Variables:** The script uses `python-dotenv` to load pin configurations from a `.env` file (lines 19-20 and 31-32).
 - **LED Initialization:** It defines two LED objects (lines 34-35):
     - **Read LED:** Default GPIO 20 (can be changed via `READ_LED` in `.env`).

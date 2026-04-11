@@ -14,4 +14,6 @@ dependencies = [
     "ty>=0.0.29",
     "black>=26.3.1",
     "pywin32>=308; sys_platform == 'win32'",
+    "adafruit-blinka>=8.48.0",
+    "hidapi>=0.14.0",
 ]
