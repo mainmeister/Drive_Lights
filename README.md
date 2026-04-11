@@ -11,7 +11,7 @@ A Python script that monitors disk activity (read/write events) and flashes GPIO
 ## Hardware Requirements
 - **Linux:** Raspberry Pi (tested on Raspberry Pi 5).
 - **Windows:** Any Windows machine (GPIO support requires specific hardware or remote pin factory).
-- **USB GPIO (Optional):** Use an adapter like the <a href="https://www.amazon.ca/MCP2221A-Adapter-Enhances-Acquisition-Control/dp/B0F38H381V" target="_blank" rel="noopener noreferrer">MCP2221A USB to GPIO Adapter</a> to provide physical pins via USB on any computer. (See <a href="https://easymcp2221.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">EasyMCP2221 documentation</a> for detailed pinouts and more information.)
+- **USB GPIO (Optional):** Use an adapter like the [MCP2221A USB to GPIO Adapter](https://www.amazon.ca/MCP2221A-Adapter-Enhances-Acquisition-Control/dp/B0F38H381V) to provide physical pins via USB on any computer. (See [EasyMCP2221 documentation](https://easymcp2221.readthedocs.io/en/latest/) for detailed pinouts and more information.)
 - LEDs connected to GPIO pins (configurable via `.env`):
   - **Write LED:** Default GPIO 21
   - **Read LED:** Default GPIO 20
@@ -65,7 +65,7 @@ python mainw.py C:\ --debug
 **Notes for Windows:**
 - **Privileges:** Depending on the monitored path, you may need to run PowerShell as **Administrator**.
 - **Dependencies:** Requires the `pywin32` library, as well as `adafruit-blinka` and `hidapi` for USB GPIO support (all installed automatically by `uv sync`).
-- **GPIO:** If using an adapter like the <a href="https://www.amazon.ca/MCP2221A-Adapter-Enhances-Acquisition-Control/dp/B0F38H381V" target="_blank" rel="noopener noreferrer">MCP2221A</a>, ensure you set the environment variable `BLINKA_MCP2221=1` before running the script. You can refer to the <a href="https://easymcp2221.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer">EasyMCP2221 documentation</a> for information on connecting and using the adapter.
+- **GPIO:** If using an adapter like the [MCP2221A](https://www.amazon.ca/MCP2221A-Adapter-Enhances-Acquisition-Control/dp/B0F38H381V), ensure you set the environment variable `BLINKA_MCP2221=1` before running the script. You can refer to the [EasyMCP2221 documentation](https://easymcp2221.readthedocs.io/en/latest/) for information on connecting and using the adapter.
 - **Monitoring:** Subdirectories are monitored **recursively** by default.
 - **Read Activity:** Detection of reads (access time updates) depends on your OS filesystem settings.
 - **Console Logging:** Use `--debug` to see individual events in the console (useful if no GPIO hardware is present).
