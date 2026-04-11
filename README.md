@@ -1,15 +1,16 @@
 # Drive_Lights
 
-A Python script that monitors disk activity (read/write events) using `fanotify` and flashes GPIO-connected LEDs on a Raspberry Pi.
+A Python script that monitors disk activity (read/write events) and flashes GPIO-connected LEDs. Supports Linux (using `fanotify`) and Windows (using `ReadDirectoryChangesW`).
 
 ## Features
-- Monitors a specified mount point (default: `/`).
-- Uses `fanotify` for efficient kernel-level monitoring of filesystem events.
+- Monitors a specified mount point (Linux) or path (Windows).
+- Uses `fanotify` (Linux) or `ReadDirectoryChangesW` (Windows) for efficient monitoring.
 - Independent LEDs for read and write activity.
 - Reuses LED objects for optimal performance.
 
 ## Hardware Requirements
-- Raspberry Pi (tested on Raspberry Pi 5).
+- **Linux:** Raspberry Pi (tested on Raspberry Pi 5).
+- **Windows:** Any Windows machine (GPIO support requires specific hardware or remote pin factory).
 - LEDs connected to GPIO pins (configurable via `.env`):
   - **Write LED:** Default GPIO 21
   - **Read LED:** Default GPIO 20
@@ -30,16 +31,42 @@ uv sync
 ```
 
 ## Usage
+
+### Linux
 Run the script with root privileges (required for `fanotify`):
 
 ```bash
-sudo .venv/bin/python main.py [mount_point]
+sudo .venv/bin/python main.py [mount_point] [--debug]
 ```
 
 Example:
 ```bash
-sudo .venv/bin/python main.py /mnt/data
+sudo .venv/bin/python main.py /mnt/data --debug
 ```
+
+**Notes for Linux:**
+- **Privileges:** Requires **root** privileges (or specific kernel capabilities).
+- **Monitoring:** Monitors the entire **mount point** recursively.
+- **Console Logging:** Use `--debug` to see individual events in the console.
+
+### Windows
+Run the Windows port script:
+
+```powershell
+python mainw.py [path] [--debug]
+```
+
+Example:
+```powershell
+python mainw.py C:\ --debug
+```
+
+**Notes for Windows:**
+- **Privileges:** Depending on the monitored path, you may need to run PowerShell as **Administrator**.
+- **Dependencies:** Requires the `pywin32` library (installed automatically by `uv sync`).
+- **Monitoring:** Subdirectories are monitored **recursively** by default.
+- **Read Activity:** Detection of reads (access time updates) depends on your OS filesystem settings.
+- **Console Logging:** Use `--debug` to see individual events in the console (useful if no GPIO hardware is present).
 
 ### Running Without Root (Optional)
 If you prefer not to run the script as root manually, you have two main options:
@@ -75,8 +102,9 @@ sudo setcap cap_sys_admin+ep .venv/bin/python
 > This program monitors software activity on a mount point. The actual hardware mounted on this mount point may or may not show the same activity on their own hardware activity LEDs due to buffering and other factors. If you are monitoring an SSD you might be alarmed at times by the number of writes being shown on the write LED. This is only showing you the operating systems calls to the device drivers write method. It is up to the device driver when or if a physical write takes place on the physical drive.
 
 ## Project Files
-- `main.py`: The core monitoring logic.
-- `OVERVIEW.md`: A detailed technical overview of `main.py`.
+- `main.py`: The core monitoring logic for Linux.
+- `mainw.py`: The Windows port of the monitoring logic.
+- `OVERVIEW.md`: A detailed technical overview of both monitoring implementations.
 - `Sketch.fzz`, `Sketch_schem.png`: Fritzing hardware diagrams.
 - `pyproject.toml`, `uv.lock`: Dependency configuration.
 
